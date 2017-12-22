@@ -1,0 +1,5 @@
+ops.SquareOp
+ops.geo.AreaOfCircleOp
+ops.AddOp
+ops.CubeOp
+ops.DivideOp

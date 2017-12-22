@@ -1,0 +1,10 @@
+Dec 19, 2017 11:48:30 AM com.jrs.training.java.logging.MyLoggerExample main
+INFO: Inside main method
+Dec 19, 2017 11:48:30 AM com.jrs.training.java.logging.MyLoggerExample logMessages
+FINEST: Beginning to create logs
+Dec 19, 2017 11:48:30 AM com.jrs.training.java.logging.MyLoggerExample logMessages
+INFO: Info Message
+Dec 19, 2017 11:48:30 AM com.jrs.training.java.logging.MyLoggerExample logMessages
+SEVERE: A Severe situation
+Dec 19, 2017 11:48:30 AM com.jrs.training.java.logging.MyLoggerExample main
+INFO: Exiting main method
