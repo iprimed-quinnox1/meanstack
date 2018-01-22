@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>My Cart</title>
+<script type="text/javascript" src="../js/cart-app.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"> </script>
+</head>
+<body >
+	<div class="container" ng-app="app" ng-controller="ctrl">
+		<header>
+			<h1>My Cart</h1>
+			<div style="float:right"><a href="#/!">Home</a></div>
+		</header>
+		<table class="w3-table">
+			<tr>
+				<td>Existing User? <a href="#!login" class="w3-btn w3-green w3-ripple"> Login </a></td>
+				<td>New User? <a href="#!register" class="w3-btn w3-green w3-ripple"> Register </a></td>
+			</tr>
+		</table>
+		<div ng-view></div>
+		<span ng-include="'_footer.html'"></span>
+	<script type="text/javascript">
+		var app = angular.module("app", ["ngRoute"]);
+		app.config(function($routeProvider) {
+		    $routeProvider
+			    .when("/", {
+			        templateUrl : "app.html"
+			    })
+			    .when("/login", {
+			        templateUrl : "login.html"
+			    })
+			    .when("/register", {
+			        templateUrl : "register.html"
+			    });
+		});	
+	</script>
+	</div>
+</body>
+</html>

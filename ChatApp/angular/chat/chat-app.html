@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Chat App</title>
+<script type="text/javascript" src="../app.js"></script>
+<script type="text/javascript" src="../user_service.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+</head>
+<body class="container">
+	<div ng-app="chatApp" ng-controller="chatCtrl">
+		<div class="row">
+			<div class="col col-sm-4">
+				<div ng-hide="nameNotSet">
+					<h3>Welcome {{activeU.uname}}!</h3>
+				</div>
+			</div>
+			<div class="col col-sm-8">
+				<div ng-repeat="box in chatBoxes">
+					<div ng-include="'one-chat.html'"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		var app = angular.module("chatApp", []);
+		var ctrl = app.controller("chatCtrl",
+				function($scope, $interval, $http) {
+					$scope.activeU = UserService.geActiveUser();
+
+					if (!$scope.activeU) {
+						// redirect to home page.
+						window.location = appBase.getRemoteURL("");
+					}
+
+				});
+
+		function Message(txt, time, from, to) {
+			this.from = from;
+			this.to = to;
+			this.text = txt;
+			this.createTime = time;
+		}
+
+		Message.prototype.fromJS = function(json) {
+			this.text = json.text;
+			this.createTime = json.createTime;
+			this.from = json.from;
+			this.to = json.to;
+
+			return this;
+		}
+		
+		function ChatBox(from, to){
+			var http = appBase.http();
+			var lastReadTime = null;
+
+			this.from = from;
+			this.to = to;
+			
+
+			this.msgs = [];
+
+			this.send = function(msg, from, to) {
+				var msgs = [];
+				msgs.push(new Message(msg, new Date(), from, to));
+
+				var url_save = "chat/save";
+				http.post(appBase.getRemoteURL(url_save), {
+					'messages' : msgs
+				}).then(function(result) {
+					//alert("saved " + msgs.length + " messages.");
+				}, function(error) {
+					alert("error: " + JSON.stringify(error));
+				});
+
+			}
+
+			this.read = function(from, to) {
+				if(!from){ // from : other (sender)
+					from = this.to;
+				}
+				if(!to){ // to : me (receiver)
+					to = this.from;
+				}
+				
+				var msgs = [];
+				var url_load = "chat/load";
+				var requestTime = new Date();
+				var condition = {};
+				if (lastReadTime) {
+					condition = {
+						'createTime' : {
+							$gte : lastReadTime
+						}
+					};
+				}
+
+				http.post(appBase.getRemoteURL(url_load), {
+					'selector' : condition
+				}).then(function(result) {
+					msgs = result.data;
+					//alert(msgs);
+					this.msgs = this.msgs.concat(msgs);
+					lastReadTime = requestTime;
+				}, function(error) {
+					alert("Error loading chats");
+				});
+			}
+
+			// set the timer to refresh the messages
+			//setTimeout(this.read, 10000);
+		}
+	</script>
+
+</body>
+</html>

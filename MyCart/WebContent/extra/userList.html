@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<body ng-app="myApp" ng-controller="namesCtrl">
+
+<ul >
+<li ng-repeat="x in names">
+    {{x.firstname}}  {{x.middlename | initials}} {{x.lastname | initials}}
+    <!-- {{x.firstname + " " + (x.middlename | initials) + " " + x.lastname}}  -->
+</li>
+</ul>
+<h2 ng-repeat="y in fullNames | initials | orderBy:''">{{y}}</h2>
+
+<script>
+var app = angular.module('myApp', []);
+app.filter('initials', function() {
+    return function(x) {
+    	if(Array.isArray(x)){
+    		var out=[];
+    		var i=0;
+    		for(i=0; i< x.length; i++){
+    			out[i] = _getInits(x[i]);
+    		}
+    		return out;
+    	} else {
+    		return _getInits(x);
+    	}
+    	
+    	function _getInits(x){
+        	var wrds = x.split(" ");
+        	
+            var i, c, txt = "";
+            for (i = 0; i < wrds.length; i++) {
+                c = wrds[i][0];
+                txt += (c + " ");
+            }
+            return txt.trim();
+    	}
+    };
+});
+app.controller('namesCtrl', function($scope) {
+    $scope.names = [
+        new Contact('Jani', 'Maria Sx', 'Maria'),
+        new Contact('AJani', 'AMaria DSx', 'AMaria'),
+        new Contact('BJani', 'BMaria ASx', 'BMaria'),
+        new Contact('CJani', 'CMaria BSx', 'CMaria'),
+        new Contact('DJani', 'DMaria CSx', 'CMaria'),
+        ];
+    
+    $scope.fullNames = [
+    	"Ritesh Prasad",
+       	"Jyoti Prasad",
+    ];
+});
+
+function Contact(fname, mname, lname){
+	this.firstname = fname;
+	this.middlename = mname;
+	this.lastname = lname;
+}
+</script>
+
+<p>Make your own filters.</p>
+<p>This filter, called "myFormat", will get the initials from multiple words</p>
+</body>
+</html>

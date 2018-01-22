@@ -1,0 +1,46 @@
+<div class="panel todo_list draggable" my-draggable>
+	<div class="titlebar header">
+			<b>{{todolist.owner}} : {{todolist.name}}</b>
+			<span style="float:right" ng-click="toggleMinMax()">{{minMax}}</span>
+	</div>
+	<div style="border:solid;" >
+		<div>
+			<span ng-hide="todolist.addingNewItem"
+				ng-click="todolist.initAddNewItem()" title="Click to add new item"
+				style="color: green;"><b>[NEW]</b>
+			</span> 
+			<!-- 
+			<span
+				ng-hide="todolist.sharing" 
+				ng-click="todolist.initSharing(true, users)" 
+				style="color: green;"><b>[Share]</b>
+			</span>
+			 -->
+		</div>
+		<div ng-show="todolist.addingNewItem">
+			<span>New Item: </span> <input ng-model="todolist.newitem">
+			<button ng-click="todolist.addNewItem()">Add</button>
+			<button ng-click="todolist.initAddNewItem()">Ignore</button>
+		</div>
+		<!-- 
+		<div ng-show="todolist.sharing">
+			Sharing with:{{todolist.sharings.length}}
+			<ul>
+				<li class="item" ng-repeat="sharing in todolist.sharings">{{sharing.uname}}: {{sharing.permission}}</li>
+			</ul>
+			<button ng-click="todolist.share()">Share</button>
+			<button ng-click="todolist.initSharing(false)">Ignore</button>
+		</div>
+		 -->
+	</div>
+	<div class="listbody content">
+		<ul>
+			<li class="item" ng-click="todolist.toggleStatusAll()"><input
+				type="checkbox" ng-checked="todolist.alldone"> <b>Apply
+					to All</b></li>
+			<li class="item" ng-repeat="x in todolist.items"
+				ng-click="x.toggleStatus()" ng-class="x.getStyle()"><input
+				type="checkbox" ng-checked="x.done"> {{x.text}}</li>
+		</ul>
+	</div>
+</div>

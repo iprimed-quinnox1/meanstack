@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"> </script>
+	<title>Assignment: Cart</title>
+</head>
+<body>
+	<div class="container" ng-app="cartApp" ng-controller="cartController">
+		<h1> Welcome {{theCart.customer}}!</h1>
+	
+		<h3>Your Cart</h3>
+		<!-- d. Bootstrap: the striped alternate rows of a table-->
+		<table class="table table-striped">
+			<!-- e. the fields of the table -->
+			<tr>
+				<th>Product Name</th>
+				<th>Unit Price</th>
+				<th>Order Quantity</th>
+				<th>Total Price</th>
+			</tr>
+			<tr ng-repeat="x in theCart.items">
+				<td>{{x.product.name}}</td>
+				<td>{{x.product.unitPrice  | currency}}</td> <!-- additional - add currency filter -->
+				<td>{{x.unitCount}}</td>
+				<td>{{x.product.unitPrice * x.unitCount  | currency}}</td> <!-- additional - add currency filter -->
+			</tr>
+		</table>
+		
+		<!-- f. the cart summary table -->
+		<h3>Cart Summary</h3>
+		<table class="table table-bordered">
+			<tr>
+				<td>No. of products in cart </td><td> = </td><td>{{theCart.items.length}}</td>
+			</tr>
+			<tr>
+				<td>Total quantity of all products together </td><td> = </td><td>{{theCart.getTotalUnits()}}</td>
+			</tr>
+			<tr>
+				<td>Gross Cart value </td><td> = </td><td>{{theCart.getTotalPrice() | currency}}</td> <!-- additional - add currency filter -->
+			</tr>
+		</table>
+	</div>
+
+	<script type="text/javascript">
+		// c. The Angular JS Controller.
+		var cartApp = angular.module("cartApp", []);
+		var cartController = cartApp.controller("cartController", 
+				function cartController($scope){
+			var cart = new Cart();
+			cart.customer = "Ritesh Prasad";
+			// Add cart items here.
+			cart.addItem(new Product("Mango", 10), 2);
+			cart.addItem(new Product("Milk", 40), 3);
+			
+			// uncomment below statements to add more items below.
+			cart.addItem(new Product("Butter", 90), 4);
+			cart.addItem(new Product("Pizza", 240), 1);
+			cart.addItem(new Product("Keyboard", 2400), 2);
+			
+			$scope.theCart = cart;
+		});
+		
+		// b. The Cart class
+		function Cart(){
+			// The customer name
+			this.customer = "";
+			// list of product/cart items
+			this.items = new Array();
+			
+			this.addItem = function(prod, nou){
+				this.items[this.items.length] = {"product":prod, "unitCount": nou,};
+			};
+			
+			this.getItemPrice = function(item){
+				if(item && item.product && item.product.unitPrice && item.unitCount){
+					return (item.product.unitPrice * item.unitCount);
+				}
+				return 0;
+			};
+			
+			this.getTotalPrice = function(){
+				var tp = 0;
+				for(var i=0; i< this.items.length; i++){
+					tp += this.getItemPrice(this.items[i]);
+				}
+				return tp;
+			}
+			
+			this.getTotalUnits = function(){
+				var tu = 0;
+				for(var i=0; i< this.items.length; i++){
+					tu += this.items[i].unitCount;
+				}
+				return tu;
+			}
+		}
+		
+		// a. The Product class 
+		function Product(pName, uPrice){
+			this.name = pName;
+			this.unitPrice =uPrice;
+		}
+		
+	</script>
+</body>
+</html>

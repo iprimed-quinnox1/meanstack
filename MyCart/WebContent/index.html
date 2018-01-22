@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html >
+<head>
+	<script type="text/javascript" src="js/cart-app.js"></script>
+	<title>My Cart</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+</head>
+<body >
+	<div class="container" ng-app="">
+		<header>
+			<h1>My Cart</h1>
+		</header>
+		<table class="w3-table">
+			<tr>
+				<td>Existing User? <a href="login.html" class="w3-btn w3-green w3-ripple"> Login </a></td>
+				<td>New User? <a href="register.html" class="w3-btn w3-green w3-ripple"> Register </a></td>
+			</tr>
+		</table>
+		<span ng-include="'_footer.html'"></span>
+	</div>
+</body>
+</html>

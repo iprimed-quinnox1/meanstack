@@ -1,0 +1,24 @@
+<div>
+	<h4>{{activeU.uname}} : TO-DOs</h4>
+
+	<button ng-click="saveAll()" class="w3-btn w3-green w3-ripple">Save
+		All</button>
+	<button ng-click="reload()" class="w3-btn w3-green w3-ripple">[Re]Load</button>
+	<br> <input ng-model="newList">
+	<button ng-click="addNewList(newList)" class="w3-btn w3-green w3-ripple">Add</button>
+	<!-- <br><button ng-click="showAlert($event)" class="w3-btn w3-green w3-ripple">Show Alert</button> -->
+	<hr>
+	<div class="listbody" ng-show="listOfLists.length>0">
+		<h4>List of Listings</h4>
+		
+		<ul>
+			<!-- 
+			<li class="item"><input
+			type="checkbox"> <b>Apply to All</b></li>
+		-->
+			<li class="item" ng-repeat="todolist in listOfLists"><input
+				type="checkbox"> {{todolist.name}}</li>
+		</ul>
+	</div>
+
+</div>

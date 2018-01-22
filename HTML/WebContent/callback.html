@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<script type="text/javascript">
+		function mySandwich(param1, param2, callback) {
+			alert('Started eating my sandwich.\n\nIt has: ' + param1 + ', '
+					+ param2);
+			callback();
+		}
+
+		mySandwich('ham', 'cheese', function() {
+			alert('Finished eating my sandwich.');
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Hit Count</title>
+<meta http-equiv="refresh" content="1">
+</head>
+<body>
+	<script type="text/javascript">
+		/*
+		if (localStorage.hits) {
+			localStorage.hits = Number(localStorage.hits) + 1;
+		} else {
+			localStorage.hits = 1;
+		}
+		*/
+		if(localStorage){
+			//document.write("Total Hits :" + localStorage.hits);
+			var c1 = JSON.parse(localStorage.cart);
+			document.write("Cart User Address:" + c1.address);
+			
+		} else {
+			document.write("Unable to access local Storage.");
+		}
+	</script>
+</body>
+</html>

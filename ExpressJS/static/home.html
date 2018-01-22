@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My Cart: Home</title>
+	<script type="text/javascript" src="js/cart.js"></script>
+	<script type="text/javascript" src="js/user_service.js"></script>
+</head>
+<body class="container">
+	<h1 id="welcome">Welcome</h1>
+	<footer><a href="#" onclick="logout();" class="w3-btn w3-green w3-ripple"> Logout </a></footer>
+	
+</body>
+<script type="text/javascript">
+	welcome();
+	
+	function welcome(){
+		//alert(activeU);
+		var activeU = UserService.geActiveUser();
+		if(activeU){
+			//alert(activeU.toStr());
+			document.title = "My Cart: Home : " + activeU.uname;
+			document.getElementById("welcome").innerHTML = "Welcome - " + activeU.uname	+ "!";
+			$(document).ready(function(){
+				//$("#welcome").html("Welcome - " + activeU.uname	+ "!");
+			});
+		} else {
+			window.location = "./index.html";
+		}
+	}
+	
+	function logout(){
+		UserService.setActiveUser();
+		window.location = "./index.html";
+	}
+</script>
+</html>

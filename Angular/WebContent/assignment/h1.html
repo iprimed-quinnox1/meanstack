@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+	<input id="add" placeholder="Enter your URL here.">
+	<button onclick="loadUrl();">Load</button>
+	<div id="div1"></div>
+	<script type="text/javascript">
+		function loadUrl() {
+			var url = document.getElementById("add").value;
+			alert("Loading URL - " + url);
+			$.get(url, function(result) {
+				//alert(result);
+				if (Array.isArray(result)) {
+					var js = JSON.stringify(result);
+					//alert(js);
+					$("#div1").html(js);
+				} else {
+					$("#div1").html(result);
+
+				}
+			});
+		}
+
+		function load() {
+
+		}
+	</script>
+</body>
+</html>

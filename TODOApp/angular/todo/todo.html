@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>To-Do List</title>
+
+  	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+
+	<script type="text/javascript" src="../app.js"></script>
+	<script type="text/javascript" src="../user_service.js"></script>
+	
+	<script type="text/javascript" src="../dragger/my-draggable.js"></script>
+	<link rel="stylesheet" href="../dragger/my-draggable.css">
+
+	<script type="text/javascript" src="todo-app.js"></script>
+	<link rel="stylesheet" href="todo-app.css">
+
+</head>
+<body class="container">
+	<div ng-app="app" ng-controller="todo-ctrl">
+		<div ng-include="'../menubar.html'"></div>
+		<!-- 
+		<div ng-include="'list-of-lists.html'"></div>
+		<div ng-repeat="todolist in listOfLists"  >
+			<div ng-include="'one-todo-list.html'" ></div>
+		</div>
+		 -->
+		<div class="row">
+			<div class="col col-sm-4" style="border: solid; border-color: brown;">
+				<div ng-include="'list-of-lists.html'"></div>
+			</div>
+			<div ng-repeat="todolist in listOfLists" class="col col-sm-4" 
+				data-name="todoListSection">
+				<div ng-include="'one-todo-list.html'"></div>
+			</div>
+		</div>
+	</div>
+	
+</body>
+</html>

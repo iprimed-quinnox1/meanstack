@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<script type="text/javascript">
+		var currentUrl = "//localhost:8080/users/load";
+		alert(currentUrl );
+		var basePath = new RegExp("(http[s]?://[^/]*)/").exec(currentUrl);
+		alert(basePath);
+	</script>
+</body>
+</html>

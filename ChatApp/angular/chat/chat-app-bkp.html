@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Chat App</title>
+<script type="text/javascript" src="../app.js"></script>
+<script type="text/javascript" src="../user_service.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+</head>
+<body class="container">
+	<div ng-app="chatApp" ng-controller="chatCtrl">
+		<hr>
+		<div ng-show="nameNotSet">
+			Enter your name: <input ng-model="uname"> <br>
+			Choose your favorite color: <input ng-model="ucolor" type="color"> <br>
+			<button ng-click="setName()">Chat!</button>
+		</div>
+		<div ng-hide="nameNotSet">
+			<h3>Welcome {{uname}}!</h3>
+			<div>
+				Enter your message: <input ng-model="msg">
+				<button ng-click="send()">Send</button>
+			</div>
+			<hr>
+			<div>
+				<div ng-repeat="m in msgs">
+					 <span style="color: {{m.color}};"> {{m.from}} :: {{m.createTime}} :: </span> <span>{{m.text}}</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var lastReadTime=null;
+		var app = angular.module("chatApp", []);
+		var ctrl = app.controller("chatCtrl", function($scope, $interval, $http) {
+			$scope.nameNotSet = true;
+			$scope.ucolor = "black";
+			$scope.activeU = UserService.geActiveUser();
+			
+			if($scope.activeU){
+				$scope.nameNotSet = false;
+				$scope.uname = $scope.activeU.uname;
+			}
+			
+			$scope.msgs = [];
+
+			$scope.setName = function(){
+				if($scope.uname){
+					$scope.nameNotSet = false;
+				}
+			}
+			
+			$scope.send = function() {
+				var msgs = [];
+				msgs.push(new Message($scope.msg, new Date(), $scope.ucolor, $scope.uname));
+				
+				var url_save = "chat/save";
+				//alert(appBase.getRemoteURL(url_save));
+				$http.post(appBase.getRemoteURL(url_save), { 'messages': msgs}).then(
+					function(result){
+						//alert("saved " + msgs.length + " messages.");
+						$scope.msg = "";
+					},
+					function (error) {
+				        alert("error: " + JSON.stringify(error));
+				    }
+				);
+				
+			}
+
+			$scope.read = function() {
+				var msgs = [];
+				var url_load = "chat/load";
+				//alert(appBase.getRemoteURL(url_load));
+				var requestTime = new Date();
+				var condition = {};
+				if(lastReadTime){
+					condition = {'createTime': {$gte: lastReadTime}};
+				}
+				
+				$http.post(appBase.getRemoteURL(url_load), {'selector':condition})
+				.then(
+					function(result){
+						msgs = result.data;
+						//alert(msgs);
+						$scope.msgs = $scope.msgs.concat(msgs);
+						lastReadTime = requestTime;
+					},
+					function(error){
+						alert("Error loading chats");
+					});
+				}
+
+			$interval($scope.read, 10000);
+		});
+
+		function Message(txt, time, col, from, to) {
+			this.from = from;
+			this.to = to;
+			this.text = txt;
+			this.color = "black";
+			if(col){
+				this.color = col;
+			}
+			this.createTime = time;
+		}
+		
+		Message.prototype.fromJS = function(json) {
+			this.text = json.text;
+			this.createTime = json.createTime;
+			this.from = json.from;
+			this.to = json.to;
+			if(json.color){
+				this.color = json.color;
+			}
+			
+			return this;
+		}
+	</script>
+
+</body>
+</html>

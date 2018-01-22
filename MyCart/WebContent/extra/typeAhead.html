@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<style type="text/css">
+ul.ta {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	width: auto;
+	background-color: #f2f2f2;
+	position: relative;
+	height: auto;
+	overflow: auto;
+}
+
+ul.ta li a {
+	display: block;
+	color: #000;
+	padding: 8px 16px;
+	text-decoration: none;
+}
+
+ul.ta li a.active {
+	background-color: #4CAF50;
+	color: white;
+}
+
+ul.ta li a:hover:not(.active ) {
+	background-color: #555;
+	color: white;
+}
+</style>
+</head>
+<body ng-app="myApp" ng-controller="namesCtrl">
+	<span>Your Name:</span>
+	<div style="width: 100px;">
+		<input ng-change="enterYName()" ng-model="yname">
+			<ul class="ta" ng-hide="yname_ta_hidden">
+				<li ng-repeat="x in fullNames | filter:yname"><a
+					ng-click="nameSelected(x)" href="#" style="text-decoration: none;">{{x}}</a></li>
+			</ul>
+	</div>
+
+	<script>
+		var app = angular.module('myApp', []);
+		app.controller('namesCtrl', function($scope) {
+			$scope.fullNames = [ "Ritesh", "Jyoti", "Prasad", "Nitish",
+					"Pranav", "Vikas", "Vinutha", ];
+
+			//$scope.yname = "Ritesh";
+
+			$scope.yname_ta_hidden = true;
+			$scope.enterYName = function() {
+				if ($scope.yname) {
+					$scope.yname_ta_hidden = false;
+				} else {
+					$scope.yname_ta_hidden = true;
+				}
+			}
+
+			$scope.nameSelected = function(x) {
+				$scope.yname_ta_hidden = true;
+				if (x) {
+					$scope.yname = x;
+				}
+			}
+		});
+
+		function Contact(fname, mname, lname) {
+			this.firstname = fname;
+			this.middlename = mname;
+			this.lastname = lname;
+		}
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script
+	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js">
+	
+</script>
+<title>Assignment: Order</title>
+</head>
+<body>
+	<div class="container" ng-app="cartApp" ng-controller="cartController">
+		<div>
+			<h1>Click any order below:</h1>
+			<ul>
+				<li ng-repeat="x in orders">
+					<a href="#" ng-click="setOrder(x._id)"> {{x.cname}} - {{x._id}}</a>
+				</li>
+			</ul>
+		</div>
+	
+		<div ng-show={{hasOrder}}>
+			<h2>Order Details : <b>{{orderId}}</b></h2>
+			<h3>Customer Name : <b>{{theOrder.customer}}</b></h3>
+			<!-- d. Bootstrap: the striped alternate rows of a table-->
+			<table class="table table-striped">
+				<!-- e. the fields of the table -->
+				<tr>
+					<th>Product Name</th>
+					<th>Unit Price</th>
+					<th>Order Quantity</th>
+					<th>Total Price</th>
+				</tr>
+				<tr ng-repeat="x in theOrder.items">
+					<td>{{x.product.name}}</td>
+					<td>{{x.product.unitPrice | currency}}</td>
+					<!-- additional - add currency filter -->
+					<td>{{x.unitCount}}</td>
+					<td>{{x.product.unitPrice * x.unitCount | currency}}</td>
+					<!-- additional - add currency filter -->
+				</tr>
+			</table>
+	
+			<!-- f. the order summary table -->
+			<h3>Order Summary</h3>
+			<table class="table table-bordered">
+				<tr>
+					<td>No. of products in order</td>
+					<td>=</td>
+					<td>{{theOrder.items.length}}</td>
+				</tr>
+				<tr>
+					<td>Total quantity of all products together</td>
+					<td>=</td>
+					<td>{{theOrder.getTotalUnits()}}</td>
+				</tr>
+				<tr>
+					<td>Gross Order value</td>
+					<td>=</td>
+					<td>{{theOrder.getTotalPrice() | currency}}</td>
+					<!-- additional - add currency filter -->
+				</tr>
+			</table>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		// c. The Angular JS Controller.
+		var cartApp = angular.module("cartApp", []);
+		var cartController = cartApp.controller(
+				"cartController",
+				function cartController($scope, $http) {
+					// show/hide the order section
+					$scope.hasOrder = true;
+
+					var url_carts = "http://localhost:8080/carts";
+					var url_products = "http://localhost:8080/products";
+					// load products.
+					$http.get(url_products).then(
+						function(result) {
+							$scope.products = result.data;
+							
+							// now, load carts
+							$http.get(url_carts).then(
+								function(result) {
+									var data = result.data;
+									if (Array.isArray(data)) {
+										$scope.orders = data;
+										// pick the first order from the bunch.
+										//$scope.theOrder = buildOrderModel(data[0], $scope.products);
+									}
+								}
+							);
+						}
+					);
+					
+					// change the order details based on selected orderID.
+					$scope.setOrder = function(orderId){
+						var orders = $scope.orders;
+						for(var i=0; i<orders.length; i++){
+							if(orders[i]._id == orderId){
+								$scope.theOrder = buildOrderModel(orders[i], $scope.products);
+								$scope.orderId = orderId;
+								return;
+							}
+						}
+					}
+				}
+			);
+
+		// utility functions.
+
+		// to find a matching product (for a pid) in products data receieved from DB
+		function findProduct(pid, products){
+			for(var i=0; i<products.length; i++){
+				var prod = products[i];
+				if(prod["_id"] == pid){
+					return prod;
+				}
+			}
+			return undefined;
+		}
+		
+		// to build Order angular object from order data receieved from DB
+		function buildOrderModel(order, prods){
+			var orderModel = new Order();
+			orderModel.customer = order.cname;
+			for (var i = 0; i < order.p_list.length; i++) {
+				var item = order.p_list[i];
+				var prod = findProduct(item.pid, prods)
+				orderModel.addItem(new Product(prod.name, prod.unit_price),item.units);
+			}
+			return orderModel;
+		}
+		
+		
+		// b. The Order class
+		function Order() {
+			// The customer name
+			this.customer = "";
+			// list of product/order items
+			this.items = new Array();
+
+			this.addItem = function(prod, nou) {
+				this.items[this.items.length] = {
+					"product" : prod,
+					"unitCount" : nou,
+				};
+			};
+
+			this.getItemPrice = function(item) {
+				if (item && item.product && item.product.unitPrice
+						&& item.unitCount) {
+					return (item.product.unitPrice * item.unitCount);
+				}
+				return 0;
+			};
+
+			this.getTotalPrice = function() {
+				var tp = 0;
+				for (var i = 0; i < this.items.length; i++) {
+					tp += this.getItemPrice(this.items[i]);
+				}
+				return tp;
+			}
+
+			this.getTotalUnits = function() {
+				var tu = 0;
+				for (var i = 0; i < this.items.length; i++) {
+					tu += this.items[i].unitCount;
+				}
+				return tu;
+			}
+		}
+
+		// a. The Product class 
+		function Product(pName, uPrice) {
+			this.name = pName;
+			this.unitPrice = uPrice;
+		}
+	</script>
+</body>
+</html>

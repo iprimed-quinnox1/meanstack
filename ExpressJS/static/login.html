@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My Cart: Login</title>
+	<script type="text/javascript" src="js/cart.js"></script>
+	<script type="text/javascript" src="js/user_service.js"></script>
+</head>
+<body class="container">
+	<h2>Login to MyCart</h2>
+	<div style="color:red" id="ermsg"></div>
+	<table class="w3-table">
+		<tr>
+			<td>User Name:</td>
+			<td><input id="uname" name="uname"> </td>
+		</tr>
+		<tr>
+			<td>Password:</td>
+			<td><input id="upwd" name="upwd" type="password"> </td>
+		</tr>
+		<tr>
+			<td> &nbsp; </td>
+			<td align="right"> <button onclick="login()" class="w3-btn w3-green w3-ripple"> Login</button> </td>
+		</tr>
+		<tr>
+			<td> &nbsp; </td>
+			<td >New User? <a href="register.html" class="w3-btn w3-green w3-ripple"> Register </a></td>
+		</tr>
+	</table>
+	
+	<script type="text/javascript">
+		function login(){
+			var authUser = UserService.authenticate(
+								$("#uname").val(), 
+								$("#upwd").val()
+							);
+			if(authUser){
+				UserService.setActiveUser(authUser);
+				window.location = "./home.html";
+			} else {
+				$("#ermsg").html("Invalid inputs. Try again.");
+			}
+		}
+	</script>
+</body>
+</html>

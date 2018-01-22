@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My Cart: Register</title>
+	<script type="text/javascript" src="js/cart.js"></script>
+	<script type="text/javascript" src="js/user_service.js"></script>
+</head>
+<body class="container">
+	<h2>Register to MyCart</h2>
+	<table class="table table-striped">
+		<tr>
+			<td>User Name:</td>
+			<td><input id="uname" name="uname"> </td>
+		</tr>
+		<tr>
+			<td>Password:</td>
+			<td><input id="upwd" name="upwd" type="password"> </td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td> <button onclick="register();" class="w3-btn w3-green w3-ripple"> Register</button> </td>
+		</tr>
+	</table>
+	<script type="text/javascript">
+		function register(){
+			var usr = UserService.addUser(
+						UserService.newUser(
+								$("#uname").val(), 
+								$("#upwd").val()
+							)
+						);
+			//alert(usr);
+			if(usr){
+				alert("added user : " + usr.toStr());
+				window.location = "./login.html";
+			} else {
+				alert("Problem in adding user details. Try again");
+			}
+		}
+	</script>
+</body>
+</html>

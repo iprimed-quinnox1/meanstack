@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Example - example-directive-drag-production</title>
+
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+
+<style type="text/css">
+.dlg {
+	position: absolute;
+	z-index: 9;
+	background-color: #f1f1f1;
+	text-align: center;
+	border: 1px solid #d3d3d3;
+}
+
+.dlgHeader {
+	padding: 10px;
+	cursor: move;
+	z-index: 10;
+	background-color: #2196F3;
+	color: #fff;
+}
+
+.dlgContent {
+	z-index: 9;
+	width: 100%;
+	height: 100%;
+}
+</style>
+
+</head>
+<body ng-app="dragModule">
+	<div>
+		<div dialog-box class="dlg">
+			<div class="dlgHeader">Drag Me</div>
+			<div dlgContent>Text</div>
+		</div>
+	</div>
+</body>
+
+<script type="text/javascript">
+	var app = angular.module('dragModule', []);
+
+	app.directive('dialogBox', [ '$document', function($document) {
+		var dir = {};
+
+		dir.restrict = 'A';
+		dir.link = function(scope, element, attr) {
+			var startX = 0, startY = 0, x = 0, y = 0;
+
+			element.on('mousedown', function(event) {
+				// Prevent default dragging of selected content
+				event.preventDefault();
+				startX = event.pageX - x;
+				startY = event.pageY - y;
+				$document.on('mousemove', mousemove);
+				$document.on('mouseup', mouseup);
+			});
+
+			function mousemove(event) {
+				y = event.pageY - startY;
+				x = event.pageX - startX;
+				element.css({
+					top : y + 'px',
+					left : x + 'px'
+				});
+			}
+
+			function mouseup() {
+				$document.off('mousemove', mousemove);
+				$document.off('mouseup', mouseup);
+			}
+		}
+		return dir;
+	} ]);
+</script>
+</html>

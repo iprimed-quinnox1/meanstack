@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html >
+<head>
+	<script type="text/javascript" src="../js/cart-app.js"></script>
+	<title>Title</title>
+</head>
+<body class="container">
+<div ng-app="ap" ng-controller="ctrl">
+	
+	<table class="table table-striped">
+		<tr ng-repeat="x in items" >
+			<td>{{x.name}}</td>
+			<td>{{x.addr}}</td>
+		</tr>
+	</table>
+	
+	<script type="text/javascript">
+	var app = angular.module("ap", []);
+	app.controller("ctrl", function($scope){
+		$scope.items=[
+		{name:'Ritesh', addr:'E City'},
+		{name:'Prasad', addr:'Bangalore'},
+		{name:'Quinnox', addr:'India'},
+		{name:'iPrimed', addr:'Chennai'},
+		];
+	});
+	</script>
+</div>
+
+</body>
+</html>

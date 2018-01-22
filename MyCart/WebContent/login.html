@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>My Cart: Login</title>
+<script type="text/javascript" src="js/cart-app.js"></script>
+<script type="text/javascript" src="js/user_service.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+</head>
+<body class="container">
+	<div ng-app="loginApp" ng-controller="loginCtrl">
+		<div style="float: right;">New User? <a href="register.html"class="w3-btn w3-green w3-ripple"> Register </a></div>
+		<h2>Login to MyCart</h2>
+		<div style="color: red" ng-hide="noErrMsg">{{ermsg}}</div>
+		<table class="w3-table">
+			<tr>
+				<td>User Name:</td>
+				<td><input ng-model="uname" ></td>
+			</tr>
+			<tr>
+				<td>Password:</td>
+				<td><input ng-model="upwd"  type="password">
+				</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td align="right">
+					<button ng-click="login()" class="w3-btn w3-green w3-ripple">
+						Login</button>
+				</td>
+			</tr>
+		</table>
+		<span ng-include="'_footer.html'"></span>
+	</div>
+	<script type="text/javascript">
+	
+	var app = angular.module("loginApp", []);
+	var ctrl = app.controller("loginCtrl", function($scope, $location){
+		$scope.uname = "";
+		$scope.upwd = "";
+		$scope.noErrMsg = true;
+		
+		$scope.login = function(){
+			$scope.noErrMsg = true;
+			var authUser = UserService.authenticate($scope.uname, $scope.upwd);
+			if(authUser){
+				//alert("setting active user");
+				UserService.setActiveUser(authUser);
+				//alert("traversing to home");
+				window.location = "home.html";
+				//$location.url("/home.html");
+			} else {
+				$scope.noErrMsg = false;
+				$scope.ermsg ="Invalid inputs. Try again.";
+			}
+		};
+	});
+
+	</script>
+
+</body>
+</html>
