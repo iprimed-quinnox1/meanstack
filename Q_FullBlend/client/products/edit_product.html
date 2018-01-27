@@ -44,19 +44,40 @@
 				</tr>
 				<tr ng-repeat="attr in product.attribs">
 					<td>{{attr.name}}</td>
-					<td>{{attr.value}}</td>
+					<td>
+						<img alt="{{attr.value}}" src="../img/{{attr.value}}" width="50" height="50" ng-show="attr.type == 'image'">
+						<span ng-show="attr.type == 'text'">{{attr.value}}</span>
+						
+					</td>
 					<td><button ng-click="editAttrib(attr)">Edit</button></td>
 				</tr>
 			</table>
 			<table class="table" ng-show="editingAttrib != null">
 				<tr>
 					<td>Name:</td>
-					<td><input ng-model="editingAttrib.name"></td>
+					<td>
+						<input ng-model="editingAttrib.name">
+					</td>
 				</tr>
 				<tr>
 					<td>Value:</td>
-					<td><textarea ng-model="editingAttrib.value" cols="30"
-							rows="10"></textarea></td>
+					<td>
+						<span>Select Type: <br>
+							<input type="radio" ng-model="editingAttrib.type" value="text"> Text &nbsp; 
+							<input type="radio" ng-model="editingAttrib.type" value="image"> Image<br>
+						</span>
+						<textarea ng-model="editingAttrib.value" cols="30"
+							rows="10" ng-show="editingAttrib.type == 'text'"></textarea>
+						<!-- 
+						<form action="/upload/img" method="post" enctype="multipart/form-data" ng-show="editingAttrib.type == 'image'">
+							Choose an Image: <input type="file" name="filetoupload" accept="image/*"><input	type="submit">
+						</form>
+						-->
+						<span ng-show="editingAttrib.type == 'image'"> 
+							Choose an Image:
+							<input type="file" accept="image/*" name="filetoupload" onchange="angular.element(this).scope().uploadFile(this)" >
+						</span>
+						</td>
 				</tr>
 				<tr>
 					<td><button ng-click="resetEditAttrib()">Cancel</button></td>

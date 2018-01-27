@@ -103,7 +103,7 @@ function prodEditCtrlCallback($scope, $http, $location){
 			$scope.editingAttrib = angular.copy(attr);
 			//alert(JSON.stringify($scope.editingAttrib));
 		} else {
-			$scope.editingAttrib = {};
+			$scope.editingAttrib = {"type":"text"};
 		}
 	}
 	
@@ -124,6 +124,34 @@ function prodEditCtrlCallback($scope, $http, $location){
 		editingAttribIdx = -1;
 		$scope.editingAttrib = null;
 	}
+	
+	// upload file.
+	$scope.uploadFile = function(ele) {
+		var files = ele.files;
+		//alert("uploading files " + files);
+		var url_upload = "upload/img";
+	    var fd = new FormData();
+	    //Take the first selected file
+	    fd.append("filetoupload", files[0]);
+
+	    $http.post(appBase.getRemoteURL(url_upload), fd, {
+	        withCredentials: true,
+	        headers: {'Content-Type': undefined },
+	        transformRequest: angular.identity
+	    }).then(
+	    	function(result){
+	    		if(result.data.success){
+	    			//alert("Saved as - " + result.data.file);
+	    			$scope.editingAttrib.value = result.data.file;
+	    		}
+	    	},
+	    	function(error){
+	    		
+	    	}
+	    );
+
+	};
+	
 }
 
 function Product(id, name, attribs){

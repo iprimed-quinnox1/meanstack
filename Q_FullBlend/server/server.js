@@ -18,6 +18,10 @@ app.use(express.static("../client"));
 var products = require('./services/products.js');
 app.use('/products', products);
 
+//Link : upload service
+var upload = require('./services/upload.js');
+app.use('/upload', upload);
+
 // web server 
 app.listen(serverPort, function(){
 	console.log("Listenting on port: " + serverPort )
