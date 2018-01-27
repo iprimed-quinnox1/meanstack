@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Example - example-directive-drag-production</title>
+
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+	<script type="text/javascript" src="my-draggable.js"></script>
+	<link rel="stylesheet" href="my-draggable.css">
+</head>
+<body ng-app="app" ng-init="vals=[1,2,3,4,]">
+	<div >
+		<div my-draggable class="draggable" style="width: 200px; border: solid;">
+			<div class="header">Drag Me
+			</div>
+			<div class="content">Text
+				<br>
+				<input ><button >Enter</button>
+				{{headerCnt}}
+			</div>
+		</div>
+	</div>
+	
+	<div ng-repeat="x in vals" my-draggable class="draggable" style="width: 200px; border: solid;">
+			<div class="header">Title {{x}}</div>
+			<div class="content">Square of {{x}} == {{x*x}} <br><input ><button >Enter</button></div>
+	</div>
+	<script type="text/javascript">
+		var app = angular.module("app", ['myDraggable']);
+	</script>
+</body>
+</html>
