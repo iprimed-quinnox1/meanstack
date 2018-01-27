@@ -76,7 +76,7 @@ function todoCtrlCallback($scope, $http){
 			alert("Error loading todo lists");
 			clbk(listOfLists);
 		});
-		}
+	}
 }
 
 function toListOfLists(loadedData){
