@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Addresses</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script type="text/javascript" src="../app.js"></script>
+<script type="text/javascript" src="../dragger/my-draggable.js"></script>
+<link rel="stylesheet" href="../dragger/my-draggable.css">
+
+<script type="text/javascript" src="addresses.js"></script>
+<link rel="stylesheet" href="addresses.css">
+</head>
+<body class="container">
+	<div ng-app="app" ng-controller="address-edit-ctrl">
+		<div>
+			<a href="./addresses.html">Show Address List</a>
+			<hr>
+		</div>
+		<h3>Address</h3>
+		<div>
+			<button ng-click="save()">SAVE</button>
+		</div>
+		<table class="table">
+			<tr>
+				<td>User Name</td>
+				<td><span>{{address.uname}}</span></td>
+			</tr>
+			<tr>
+				<td>Country</td>
+				<td><input ng-model="address.country"></td>
+			</tr>
+			<tr>
+				<td>Full Name</td>
+				<td><input ng-model="address.full_name"></td>
+			</tr>
+			<tr>
+				<td>Mobile Number</td>
+				<td><input ng-model="address.mobile_number"></td>
+			</tr>
+			<tr>
+				<td>PIN Code</td>
+				<td><input ng-model="address.pincode"></td>
+			</tr>
+			<tr>
+				<td>Street</td>
+				<td>
+					<input ng-model="address.street_line1"><br>
+					<input ng-model="address.street_line2">
+				</td>
+			</tr>
+			<tr>
+				<td>Landmark</td>
+				<td><input ng-model="address.landmark"></td>
+			</tr>
+			<tr>
+				<td>City</td>
+				<td><input ng-model="address.city"></td>
+			</tr>
+			<tr>
+				<td>State</td>
+				<td><input ng-model="address.state"></td>
+			</tr>
+		</table>
+		<div ng-show="editing">
+			<h4>Attributes</h4>
+			<table class="table" ng-hide="editingAttrib != null">
+				<tr>
+					<th>Name</th>
+					<th>Value</th>
+					<th><button ng-click="editAttrib()">Add New</button></th>
+				</tr>
+				<tr ng-repeat="attr in address.attribs">
+					<td>{{attr.name}}</td>
+					<td>
+						<span>{{attr.value}}</span>
+						
+					</td>
+					<td><button ng-click="editAttrib(attr)">Edit</button></td>
+				</tr>
+			</table>
+			<table class="table" ng-show="editingAttrib != null">
+				<tr>
+					<td>Name:</td>
+					<td>
+						<input ng-model="editingAttrib.name">
+					</td>
+				</tr>
+				<tr>
+					<td>Value:</td>
+					<td>
+						<textarea ng-model="editingAttrib.value" cols="30"
+							rows="10" ></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td><button ng-click="resetEditAttrib()">Cancel</button></td>
+					<td><button ng-click="saveAttrib()">Save</button></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

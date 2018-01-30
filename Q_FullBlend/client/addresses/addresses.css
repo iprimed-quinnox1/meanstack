@@ -1,0 +1,25 @@
+.item {
+	list-style-type: none;
+}
+
+.item-new {
+	color: green;
+}
+
+.item-done {
+	color: red;
+	text-decoration: line-through;
+}
+
+.todo_list {
+	border: medium solid;
+	min-width: 250px;
+}
+
+.todo_list .titlebar {
+	background-color: lightgrey;
+}
+
+.todo_list .listbody {
+	
+}

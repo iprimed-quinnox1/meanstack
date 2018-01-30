@@ -28,12 +28,26 @@ exports.saveDocuments = function saveDocuments(collection, docs, callback){
 		var db = client.db(dbname);
 		console.log(dbname + " Database created!");
 		var coll = db.collection(collection);
-		console.log("saving docs : " + JSON.stringify(docs) + "\n in coll - " +collection );
+		console.log("saving docs : " + JSON.stringify(docs) + "\n in coll - " + collection );
 		
 		for(var i=0; i<docs.length; i++){
 			coll.save(docs[i]);
 		}
 		// callback the listener
 		callback({status:"success", docs:docs});
+	});
+}
+
+exports.updateDocuments = function updateDocuments(collection, selector, updates, options, callback){
+	MongoClient.connect(url, function(err, client) {
+		if (err) throw err;
+		var db = client.db(dbname);
+		console.log(dbname + " Database created!");
+		var coll = db.collection(collection);
+		console.log("updating " + JSON.stringify(updates) + " in docs for selector : " + JSON.stringify(selector) + "\n in coll - " + collection );
+		
+		coll.update(selector, updates, options);
+		// callback the listener
+		callback({status:"success"});
 	});
 }

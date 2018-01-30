@@ -18,6 +18,10 @@ app.use(express.static("../client"));
 var products = require('./services/products.js');
 app.use('/products', products);
 
+//Link : addresses service
+var addresses = require('./services/addresses.js');
+app.use('/addresses', addresses);
+
 //Link : upload service
 var upload = require('./services/upload.js');
 app.use('/upload', upload);

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Addresses</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script type="text/javascript" src="../app.js"></script>
+<script type="text/javascript" src="../dragger/my-draggable.js"></script>
+<link rel="stylesheet" href="../dragger/my-draggable.css">
+
+<script type="text/javascript" src="addresses.js"></script>
+<link rel="stylesheet" href="addresses.css">
+</head>
+<body class="container">
+	<div>
+		<a href="/">Home</a>
+		<hr>
+	</div>
+	<div ng-app="app" ng-controller="addresses-ctrl">
+		<span>Enter User Name : <input ng-model="uname">
+			<button ng-click="loadAddresses(uname)">List Addresses</button></span>
+
+
+
+
+		<div ng-show="addresses.length > 0">
+			<h3>
+				Addresses:
+				<button ng-click="edit(uname)">Add New</button>
+			</h3>
+			<div ng-repeat="x in addresses" style="border: solid; width: auto;">
+				<div ng-show="x.is_default">
+					<b style="color: green;">Default Address</b>
+					<hr>
+				</div>
+				<ul style="list-style: none;">
+					<li><b>{{x.full_name}}</b> </li>
+					<li>{{x.street_line1}} </li>
+					<li>{{x.street_line2}} </li>
+					<li>{{x.city}}, {{x.state}} {{x.pincode}}  </li>
+					<li>{{x.country}} </li>
+					<li>Phone Number: {{x.mobile_number}} </li>
+				</ul>
+				<hr>
+				<span><a ng-click="edit(x.uname, x._id)">Edit</a> </span>
+				<!-- <span>&nbsp;|&nbsp;<a ng-click="remove(x.uname, x._id)" >Delete</a></span> -->
+				<span ng-hide="x.is_default">&nbsp;|&nbsp;<a ng-click="setDefault(x.uname, x._id)" >Set as Default</a></span>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
