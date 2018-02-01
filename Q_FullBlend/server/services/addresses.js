@@ -47,24 +47,6 @@ router.post('/setdefault', function(req, res){
 			res.send(result); //send the response
 		});
 	});
-	/*
-	getAddresses({'uname':uname}, function(addresses){
-		if(addresses && addresses.length > 0){
-			for(var i=0; i<addresses.length; i++){
-				if(addresses[i]._id == aid){
-					addresses[i].is_default = true;
-				} else {
-					addresses[i].is_default = false;
-				}
-			}
-			saveAddresses(addresses, function(result){
-				console.log("default address updated");
-				res.send(result); //send the response
-			});
-
-		}
-	});
-	*/
 
 });
 

@@ -10,10 +10,13 @@ app.controller("addresses-ctrl", addressesController);
 app.controller("address-edit-ctrl", addressEditController);
 
 // controller callback
-function addressesController($scope, $http){
+function addressesController($scope, $http, $location){
+	alert(JSON.stringify($location));
+	alert("Search: " + JSON.stringify($location.search('_un=')));
+	
 	$scope.uname = "";
 	$scope.addresses = [];
-		
+	
 	$scope.edit = function(uname, id){
 		var loc = "edit_address.html#!search?";
 		var qp="";
@@ -26,7 +29,7 @@ function addressesController($scope, $http){
 		window.location = loc + encodeURI(qp);
 	}
 	
-	$scope.reload = function(selector){
+	$scope.load = function(selector){
 		var url_load = "addresses/load";
 		//alert(appBase.getRemoteURL(url_load));
 		if(!selector){
@@ -50,8 +53,8 @@ function addressesController($scope, $http){
 		} else {
 			$scope.uname = name;
 		}
-		//alert(name);
-		$scope.reload({"uname": name})
+		//alert($scope.uname);
+		$scope.load({"uname": name})
 	}
 	
 	$scope.setDefault = function(uname, aid){
@@ -70,10 +73,20 @@ function addressesController($scope, $http){
 	
 	// load once;
 	//$scope.reload();
+	$scope.init = function(){
+		var params = $location.search();
+		if(params._un){
+			$scope.uname = params._un;
+			$scope.load({"uname": $scope.uname})
+		}
+	}
+	
+	$scope.init();
 	
 }
 
 function addressEditController($scope, $http, $location){
+
 	$scope.editing = false;
 	
 	var address = new Address();
@@ -87,7 +100,7 @@ function addressEditController($scope, $http, $location){
 	
 	if(params._aid){
 		var url_load = "addresses/load";
-		alert(appBase.getRemoteURL(url_load));
+		//alert(appBase.getRemoteURL(url_load));
 		$http.post(appBase.getRemoteURL(url_load), {'selector':{'_id': params._aid}}).then(
 		function(result){
 			data = result.data;

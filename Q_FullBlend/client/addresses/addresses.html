@@ -19,17 +19,16 @@
 	</div>
 	<div ng-app="app" ng-controller="addresses-ctrl">
 		<span>Enter User Name : <input ng-model="uname">
-			<button ng-click="loadAddresses(uname)">List Addresses</button></span>
+			<button ng-click="loadAddresses(uname)" ng-disabled="uname == ''">List Addresses</button>
+		</span>
 
+		<h3>
+			Addresses:
+			<button ng-click="edit(uname)" ng-disabled="uname == ''">Add New</button>
+		</h3>
 
-
-
-		<div ng-show="addresses.length > 0">
-			<h3>
-				Addresses:
-				<button ng-click="edit(uname)">Add New</button>
-			</h3>
-			<div ng-repeat="x in addresses" style="border: solid; width: auto;">
+		<div ng-show="addresses.length > 0" class="row">
+			<div ng-repeat="x in addresses" class="w3-card-4 col col-sm-3" style="margin: 20px; height: 250px;">
 				<div ng-show="x.is_default">
 					<b style="color: green;">Default Address</b>
 					<hr>
@@ -42,10 +41,11 @@
 					<li>{{x.country}} </li>
 					<li>Phone Number: {{x.mobile_number}} </li>
 				</ul>
-				<hr>
-				<span><a ng-click="edit(x.uname, x._id)">Edit</a> </span>
-				<!-- <span>&nbsp;|&nbsp;<a ng-click="remove(x.uname, x._id)" >Delete</a></span> -->
-				<span ng-hide="x.is_default">&nbsp;|&nbsp;<a ng-click="setDefault(x.uname, x._id)" >Set as Default</a></span>
+				<div style="position:absolute; bottom:0; ">
+					<span><a ng-click="edit(x.uname, x._id)">Edit</a> </span>
+					<!-- <span>&nbsp;|&nbsp;<a ng-click="remove(x.uname, x._id)" >Delete</a></span> -->
+					<span ng-hide="x.is_default">&nbsp;|&nbsp;<a ng-click="setDefault(x.uname, x._id)" >Set as Default</a></span>
+				</div>
 			</div>
 		</div>
 	</div>
