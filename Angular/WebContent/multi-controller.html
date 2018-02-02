@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<body ng-app="myApp">
+
+	<p>The rootScope's favorite color:</p>
+	<h1>{{g_color}}</h1>
+
+	<div ng-controller="myCtrl">
+
+		<p>The scope of the controller's favorite color:</p>
+		<h1>Global Color: {{g_color}}</h1>
+		<h1>
+			Local Color: {{color}}
+			<button ng-click="setGlobal()">set global</button>
+		</h1>
+
+	</div>
+
+	<div ng-controller="yourCtrl">
+
+		<p>The scope of the controller's favorite color:</p>
+		<h1>Global Color: {{g_color}}</h1>
+		<h1>
+			Local Color: {{color}}
+			<button ng-click="setGlobal()">set global</button>
+		</h1>
+
+	</div>
+	<p>The rootScope's favorite color is still:</p>
+	<h1>{{g_color}}</h1>
+
+	<script>
+		var app = angular.module('myApp', []);
+
+		app.run(function($rootScope) {
+			$rootScope.g_color = 'blue';
+		});
+
+		app.controller('myCtrl', function($scope, $rootScope) {
+			$scope.color = "red";
+			$scope.setGlobal = function() {
+				$rootScope.g_color = $scope.color;
+			}
+		});
+
+		app.controller('yourCtrl', function($scope, $rootScope) {
+			$scope.color = "yellow";
+			$scope.setGlobal = function() {
+				$rootScope.g_color = $scope.color;
+			}
+		});
+	</script>
+
+	<p>Notice that controller's color variable does not overwrite the
+		rootScope's color value.</p>
+
+</body>
+</html>

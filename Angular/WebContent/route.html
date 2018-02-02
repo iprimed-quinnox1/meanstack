@@ -27,8 +27,13 @@ app.config(function($routeProvider) {
         templateUrl : "green.html"
     })
     .when("/blue", {
-        templateUrl : "blue.html"
+        templateUrl : "blue.html",
+        controller:"blueCtrl"
     });
+});
+
+app.controller("blueCtrl", function($scope){
+	$scope.color='YELLOW';
 });
 </script>
 
