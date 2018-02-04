@@ -11,6 +11,8 @@ var prodEditCtrl = app.controller("prod-edit-ctrl", prodEditCtrlCallback);
 
 // controller callback
 function prodsCtrlCallback($scope, $http){
+	$scope.listStyle = 'card';
+	$scope.activeU = UserService.geActiveUser();
 	$scope.products = [];
 		
 	$scope.edit = function(id){
@@ -20,6 +22,19 @@ function prodsCtrlCallback($scope, $http){
 			qp = qp + "pid=" + id;
 		}
 		window.location = loc + encodeURI(qp);
+	}
+	
+	$scope.addToCart = function(id, name){
+		var url_addToCart = "orders/addToCart";
+		//alert(appBase.getRemoteURL(url_addToCart));
+		$http.post(appBase.getRemoteURL(url_addToCart), {'pid':id, 'uid':$scope.activeU.uname}).then(
+		function(result){
+			alert("Product '" + name +"' added to cart");
+		},
+		function(error){
+			alert("Error adding product to cart");
+			//clbk();
+		});
 	}
 	
 	$scope.reload = function(){
@@ -37,6 +52,11 @@ function prodsCtrlCallback($scope, $http){
 		});
 	}
 	
+	$scope.isAdmin = function isAdmin(){
+		return false;
+	}
+	
+	
 	// load once;
 	$scope.reload();
 	
@@ -45,6 +65,8 @@ function prodsCtrlCallback($scope, $http){
 function prodEditCtrlCallback($scope, $http, $location){
 	$scope.editing = false;
 	var prod = new Product();
+	//alert(prod._id);
+	
 	var params = $location.search();
 	
 	//alert(JSON.stringify(prod));
@@ -57,8 +79,13 @@ function prodEditCtrlCallback($scope, $http, $location){
 		function(result){
 			data = result.data;
 			if(data && data.length >0){
+				//base properties.
 				prod._id = data[0]._id;
 				prod.name = data[0].name;
+				prod.photo = data[0].photo;
+				prod.description = data[0].description;
+				prod.unitprice = data[0].unitprice;
+				// attributes
 				if(data[0].attribs){
 					prod.attribs = data[0].attribs;
 				}
@@ -126,7 +153,7 @@ function prodEditCtrlCallback($scope, $http, $location){
 	}
 	
 	// upload file.
-	$scope.uploadFile = function(ele) {
+	$scope.uploadFile = function(ele, clbk) {
 		var files = ele.files;
 		//alert("uploading files " + files);
 		var url_upload = "upload/img";
@@ -142,21 +169,49 @@ function prodEditCtrlCallback($scope, $http, $location){
 	    	function(result){
 	    		if(result.data.success){
 	    			//alert("Saved as - " + result.data.file);
-	    			$scope.editingAttrib.value = result.data.file;
+	    			clbk(result);
 	    		}
 	    	},
 	    	function(error){
-	    		
+	    		clbk();
 	    	}
 	    );
 
 	};
 	
+	$scope.uploadForAttrib = function(ele){
+		$scope.uploadFile(ele, function(result){
+			if(result){
+				$scope.editingAttrib.value = result.data.file;
+			}
+		});
+	}
+	
+	$scope.changePhoto = function(ele){
+		$scope.uploadFile(ele, function(result){
+			if(result){
+				$scope.product.photo = result.data.file;
+				$editingPhoto = false;
+			}
+		});
+	}
 }
 
 function Product(id, name, attribs){
-	this._id = id;
-	this.name = name;
+	this._id = "prod_" + (Math.random() * new Date().getTime());
+	if(id){
+		this._id = id;
+	}
+	
+	this.name = this._id;
+	if(name){
+		this.name = name;
+	}
+	
+	this.photo = "no_photo.jpg"
+	this.description = "No Description";
+	this.unitprice = 0;
+	
 	this.attribs = new Array();
 	if(attribs){
 		this.attribs = attribs;

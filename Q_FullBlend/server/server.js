@@ -15,16 +15,24 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 app.use(express.static("../client"));
 
 // Link : products service
-var products = require('./services/products.js');
-app.use('/products', products);
+var productsService = require('./services/products/products_service.js');
+app.use('/products', productsService);
 
 //Link : addresses service
-var addresses = require('./services/addresses.js');
-app.use('/addresses', addresses);
+var addressesService = require('./services/addresses/addresses_service.js');
+app.use('/addresses', addressesService);
 
 //Link : upload service
-var upload = require('./services/upload.js');
-app.use('/upload', upload);
+var uploadService = require('./services/common/upload_service.js');
+app.use('/upload', uploadService);
+
+//Link : users service
+var usersService = require('./services/users/users_service.js');
+app.use('/users', usersService);
+
+//Link : users service
+var ordersService = require('./services/orders/orders_service.js');
+app.use('/orders', ordersService);
 
 // web server 
 app.listen(serverPort, function(){

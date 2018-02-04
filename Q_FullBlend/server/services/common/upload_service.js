@@ -3,7 +3,7 @@ var router = express.Router();
 
 var formidable = require('formidable');
 var fs = require('fs');
-var httpBase = require('./http-base');
+var httpBase = require('../base/base_service');
 
 
 router.post('/*', function(req, res){

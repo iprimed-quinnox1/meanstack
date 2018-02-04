@@ -10,24 +10,52 @@
 
 	<script type="text/javascript" src="products.js"></script>
 	<link rel="stylesheet" href="products.css">
+	<script type="text/javascript" src="../users/user_service.js"></script>
 </head>
 <body class="container">
-		<div>
-			<a href="/">Home</a>
-			<hr>
-		</div>
+	<div ng-include="'../menubar.html'"></div>
 	<div ng-app="app" ng-controller="prods-ctrl">
 		<h3>Products: <button ng-click="edit()">Add New</button></h3>
+		<div ng-show="listStyle=='table'">
 		<table class="table">
 			<tr>
-				<th>ID</th> <th>Name</th> <th> Edit</th>
+				<!-- <th>ID</th> --> <th>Name</th> <th>Unit Price</th> <th>Description</th> <th>Photo</th> <th> <span>Options</span></th>
 			</tr>
 			<tr ng-repeat="x in products">
-				<td>{{x._id}}</td>
+				<!-- <td>{{x._id}}</td> -->
 				<td>{{x.name}}</td>
-				<td><button ng-click="edit(x._id)">edit</button></td>
+				<td>{{x.unitprice}}</td>
+				<td>{{x.description}}</td>
+				<td>{{x.name}}</td>
+				<td><span><button ng-click="addToCart(x._id, x.name)">Add to Cart</button></span> | <span><button ng-click="edit(x._id)">edit</button> </span></td>
 			</tr>
 		</table>
+		</div>
+		<div class="row" ng-show="listStyle=='card'">
+			<div ng-repeat="prod in products" class="w3-card-4 col col-sm-3" style="margin: 20px; height: 250px;">
+				<div style="overflow: auto;">
+					<img alt="{{prod.photo}}" src="../img/{{prod.photo}}" width="150" height="150" style="display: block; margin: auto; " >
+					<ul style="list-style: none;">
+						<li><b>{{prod.name}}</b> </li>
+						<!-- <li>{{prod._id}} </li> -->
+						<li> <!-- attributes -->
+							<ul style="list-style: none;">
+								<li ng-repeat="attr in prod.attribs">
+									<b>{{attr.name}} :</b> 
+									<img ng-show="attr.type == 'image'" alt="{{attr.value}}" src="../img/{{attr.value}}" width="50" height="50" > 
+									<span ng-show="attr.type == 'text'">{{attr.value}}</span>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+				<!-- options -->
+				<div style="position:absolute; bottom:0; ">
+					<span><a ng-click="addToCart(prod._id, prod.name)">Add To Cart</a> </span>
+					<span>&nbsp;|&nbsp;<a ng-click="edit(prod._id)" >Edit</a></span>
+				</div>
+			</div>
+		</div>
 	</div>
 </body>
 </html>

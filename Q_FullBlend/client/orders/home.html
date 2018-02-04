@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>My Cart</title>
+<script type="text/javascript" src="../app.js"></script>
+<script type="text/javascript" src="../users/user_service.js"></script>
+<script type="text/javascript" src="order.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+
+<style type="text/css">
+INPUT.newitem {
+	width: 100%;
+}
+</style>
+</head>
+<body class="container">
+	<div ng-app="homeApp" ng-controller="homeCtrl">
+		<a href="#" ng-click="logout()" class="w3-btn w3-green w3-ripple"
+			style="float: right;">Logout </a>
+		<h1 id="welcome">Welcome {{activeU.uname}}!</h1>
+		<div ng-controller="orderCtrl">
+			<h4>Cart</h4>
+			<p style="font-size: 8px;">
+				Listing Style: <select ng-model="selListing"
+					ng-options="x.lbl for x in listingTypes"></select>
+			</p>
+			<div>
+				<button class="w3-btn w3-green w3-ripple"
+					ng-click="toggleAddNewItem()" ng-hide="showDiv">Add New
+					Item</button>
+				<div class="{{selListing.cls}}" ng-show="showDiv">
+					<h4>Enter New Item details:</h4>
+					<table class="table table-bordered">
+						<tr>
+							<td><b>Product: </b></td>
+							<td><input ng-model="newItem.productid" class="newitem"></td>
+						</tr>
+						<tr>
+							<td><b>Quantity: </b></td>
+							<td><input ng-model="newItem.quantity" class="newitem"></td>
+						</tr>
+						<tr>
+							<td><b>Delivery Address: </b></td>
+							<td><input ng-model="newItem.delAddress" class="newitem"></td>
+						</tr>
+					</table>
+					<span ng-click="addNewItem()" class="w3-btn w3-green w3-ripple">ADD</span>
+				</div>
+			</div>
+
+			<hr>
+			<span ng-show="user.order.items.length == 0">No Items in Cart</span>
+			<div class="row" ng-show="user.order.items.length >0">
+				<div ng-repeat="item in user.order.items"
+					class="col col-sm-6 {{selListing.cls}}">
+					<span style="float: right; cursor: pointer;"
+								ng-click="remove(item.productid)">&#x274C;</span>
+					<table class="table">
+						<tr>
+							<td><img alt="No Image" src="img/{{item.img}}"></td>
+							<td>
+								<h2>{{item.productid}}</h2> <b>Quantity: </b>{{item.quantity}} <br>
+								<b>Delivery Address: </b>{{item.delAddress}}</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</body>
+<script type="text/javascript">
+	var app = angular.module("homeApp", []);
+	var homeCtrl = app.controller("homeCtrl", function($scope) {
+		$scope.activeU = UserService.geActiveUser();
+		//alert(typeof $scope.activeU);
+
+		if ($scope.activeU === undefined) {
+			window.location = "index.html";
+		} else {
+			document.title = $scope.activeU.uname;
+		}
+
+		$scope.logout = function() {
+			//alert("logout");
+			UserService.setActiveUser();
+			window.location = "/";
+		};
+
+		$scope.showCart = function() {
+			window.location = "order/order.html";
+		}
+	});
+
+	var orderCtrl = app.controller("orderCtrl", function($scope) {
+
+		$scope.listingTypes = [ {
+			cls : "well",
+			lbl : "BS Card"
+		}, {
+			cls : "w3-panel w3-card w3-grey",
+			lbl : "W3 Card"
+		} ];
+
+		$scope.selListing = $scope.listingTypes[0];
+
+		$scope.remove = function(pid) {
+			alert("remove - " + pid);
+			$scope.user.order.remove(pid);
+		};
+
+		var user = UserService.geActiveUser();
+		user.order = new Order("O_" + Math.random(), user.uname);
+		//user.order.fillDummyItems();
+
+		$scope.user = user;
+
+		$scope.addNewItem = function() {
+			//alert("Adding");
+			var item = $scope.newItem;
+			$scope.user.order.addItem(new OrderItem(item.productid,
+					item.quantity, item.delAddress));
+			//alert("Added -" + item.productid);
+			$scope.toggleAddNewItem();
+		}
+
+		$scope.toggleAddNewItem = function() {
+			$scope.showDiv = !$scope.showDiv;
+			$scope.newItem = new OrderItem("Product", 0, "Address");
+		}
+	});
+</script>
+</html>

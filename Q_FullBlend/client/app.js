@@ -1,106 +1,61 @@
 var appBase = {
-		storage: sessionStorage,
-		lang: "en",
-		bs: "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css",
-		jq: "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js",
-		bsjs: "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js",
-		
-		angular: "https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js",
-		ng_anim: "https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.js",
-		ng_sanitize:"https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-sanitize.js",
-		
-		w3css:"https://www.w3schools.com/w3css/4/w3.css",
-		view: "width=device-width, initial-scale=1.0",
-		
-		init: function (){
-		
+	storage: localStorage,
+	// <html lang="en">
+	lang: "en",
+
+	//<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	bs: "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css",
+
+	//<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	jq: "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js",
+
+	//<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	bsjs: "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js",
+	
+	// <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	angular: "https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js",
+
+	//<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+	ng_route: "https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js",
+
+	//<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.js"></script>
+	ng_anim: "https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.js",
+
+	//<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-sanitize.js"></script>
+	ng_sanitize:"https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-sanitize.js",
+	
+	//<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	w3css:"https://www.w3schools.com/w3css/4/w3.css",
+
+	// <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	view: "width=device-width, initial-scale=1.0",
+	
+	// <meta charset="utf-8">
+	chset:"utf-8",
+	
+	init: function (){
 		//alert("Initializing");
-		// <html lang="en">
+		
 		document.documentElement.lang = this.lang;
-		var head = document.getElementsByTagName("head")[0];
-	
-		// <meta name="viewport" content="width=device-width, initial-scale=1.0">
-		this.addChild(head, "meta", 
-				[
-					["name", "viewport"],
-					["content", this.view],
-				]
-		);
+		this.head = document.getElementsByTagName("head")[0];
 		
-		//<meta charset="utf-8">
-		this.addChild(head, "meta", 
-				[
-					["charset", "utf-8"],
-				]
-		);
-		
-	  	//<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-		this.addChild(head, "link", 
-				[
-					["rel", "stylesheet"],
-					["href", this.w3css],
-				]
-		);
-	
+		this.addScript(this.angular);
+		this.addScript(this.ng_route);
+		this.addScript(this.jq);
+		this.addScript(this.bsjs);
 
-		//<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-		this.addChild(head, "link", 
-				[
-					["rel", "stylesheet"],
-					["href", this.bs],
-				]
-		);
-	
-	  	//<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-		if(window.jQuery === undefined){
-			this.addChild(head, "script", 
-					[
-						["src", this.jq],
-					]
-			);
-		}
-	
-		//<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-		if(window.bootstrap === undefined){
-			this.addChild(head, "script", 
-					[
-						["src", this.bsjs],
-					]
-			);
-		}
-
+		this.addMeta([["name", "viewport"], ["content", this.view],]);
+		this.addMeta([["charset", this.chset],]);
 		
-		// <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-		if(window.angular === undefined){
-			this.addChild(head, "script", 
-					[
-						["src", this.angular],
-					]
-			);
-		}
+		this.addStylesheet(this.w3css);
+		this.addStylesheet(this.bs);
 		
-		/*
-		//<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.js"></script>
-		this.addChild(head, "script", 
-				[
-					["src", this.ng_anim],
-				]
-		);
 		
-		// <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-sanitize.js"></script>
-
-		this.addChild(head, "script", 
-				[
-					["src", this.ng_sanitize],
-				]
-		);
-		*/
-			
 		//alert("Init Completed<br>" + head.innerHTML);
 	},
 	
 	addChild: function (/* parent element*/ parent, /*child tag name*/ childName, /* key-value pairs*/ attribs ){
-		
+		//alert("adding : '" + childName + "'\nattributes: " + JSON.stringify(attribs));
 		if(parent){
 			var child = document.createElement(childName);
 			for(var i=0; i<attribs.length; i++){
@@ -110,6 +65,21 @@ var appBase = {
 			
 			parent.appendChild(child);
 		}
+	},
+	
+	addScript: function (src){
+		//alert(this.head);
+		this.addChild(this.head, "script", [["src", src],]);
+	},
+	
+	addStylesheet: function (href){
+		//alert(this.head);
+		this.addChild(this.head, "link", [["rel", "stylesheet"],["href", href],]);
+	},
+
+	addMeta: function (metaAttribs){
+		//alert(this.head);
+		this.addChild(this.head, "meta", metaAttribs);
 	},
 	
 	getRemoteURL: function (relPath){
