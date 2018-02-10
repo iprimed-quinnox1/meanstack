@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Test Angular</title>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>  -->
+<script type="text/javascript" src="../app.js"></script>
+</head>
+<body class="container">
+	Page.
+	<div ng-app="app" ng-controller="ctrl">
+		Name: {{name}}
+	</div>
+	
+	<script type="text/javascript">
+	//alert("loading test app");
+		if(appBase){
+			//alert("loading user service");
+			appBase.print(appBase.head);
+			appBase.addScript("http://localhost:8080/users/user_service.js", function(child){
+				alert("Loaded: " + child.innerHTML);
+			});
+			appBase.print(appBase.head);
+			
+			if(typeof UserService === 'undefined'){
+				alert("User Service NOT loaded.")
+			}else {
+				alert('User data CAN be created!!!');
+			}
+		}
+		if(typeof jQuery === 'undefined'){
+			alert("JQuery not loaded.")
+		}
+		if(typeof angular === 'undefined'){
+			alert("Angular not loaded.")
+		} else {
+			angular
+				.module("app", [])
+				.controller("ctrl", function($scope){
+					var sc =$scope;
+					sc.name = "Test Angular";
+				});
+		}
+	</script>
+</body>
+</html>
