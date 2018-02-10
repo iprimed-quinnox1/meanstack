@@ -3,19 +3,20 @@
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
 
-<body ng-app="myApp">
-
+<body ng-app="myApp" ng-controller="basePageController">
+{{BasePageName}}
 <p><a href="#!">Main</a></p>
 
 <a href="#!red">Red</a>
 <a href="#!green">Green</a>
-<a href="#!blue">Blue</a>
+<br><input ng-model="mycolor" title="Enter the name of a COLOR">
+<a href="" ng-click="toMycolor()">{{mycolor}}</a> 
 
 <div ng-view></div>
 
 <script>
 var app = angular.module("myApp", ["ngRoute"]);
-app.config(function($routeProvider) {
+app.config(['$routeProvider', function($routeProvider) {
     $routeProvider
     .when("/", {
         templateUrl : "main.html"
@@ -26,14 +27,28 @@ app.config(function($routeProvider) {
     .when("/green", {
         templateUrl : "green.html"
     })
-    .when("/blue", {
+    .when("/mycolor/:XYZ", {
         templateUrl : "blue.html",
         controller:"blueCtrl"
     });
+}]);
+
+app.controller("basePageController", function($scope, $location){
+	$scope.BasePageName = "Test Routing in AngularJS";
+	$scope.mycolor = "Blue";
+	
+	$scope.toMycolor = function(){
+		$location.path("mycolor/" + $scope.mycolor);
+	}
 });
 
-app.controller("blueCtrl", function($scope){
-	$scope.color='YELLOW';
+app.controller("blueCtrl", function($scope, $routeParams){
+	//alert($routeParams);
+	$scope.color='Blue';
+	var givenColor = $routeParams.XYZ;
+	if(givenColor){
+		$scope.color= givenColor;
+	}
 });
 </script>
 
