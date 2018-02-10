@@ -3,14 +3,15 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Addresses</title>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-<script type="text/javascript" src="../app.js"></script>
-<script type="text/javascript" src="../dragger/my-draggable.js"></script>
-<link rel="stylesheet" href="../dragger/my-draggable.css">
-
-<script type="text/javascript" src="addresses.js"></script>
-<link rel="stylesheet" href="addresses.css">
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	<script type="text/javascript" src="../app.js"></script>
+	<script type="text/javascript" src="../dragger/my-draggable.js"></script>
+	<link rel="stylesheet" href="../dragger/my-draggable.css">
+	
+	<script type="text/javascript" src="addresses.js"></script>
+	<link rel="stylesheet" href="addresses.css">
+	<script type="text/javascript" src="../users/user_service.js"></script>
 </head>
 <body class="container">
 	<div>
@@ -18,7 +19,7 @@
 		<hr>
 	</div>
 	<div ng-app="app" ng-controller="addresses-ctrl">
-		<span>Enter User Name : <input ng-model="uname">
+		<span ng-show="activeU === undefined">Enter User Name : <input ng-model="uname">
 			<button ng-click="loadAddresses(uname)" ng-disabled="uname == ''">List Addresses</button>
 		</span>
 

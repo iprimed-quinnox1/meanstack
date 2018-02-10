@@ -8,14 +8,18 @@ var router = express.Router();
 
 // load Address objects
 router.post('/load', function(req, res){
-	console.log("loading...");
+	console.log("loading addresses...");
+	// set the basic headers
 	httpBase.setHeader(res);
+	// client input - find the selector
 	var selector = {};
 	if(req.body.selector){
 		selector = req.body.selector;
 		console.log("Selector: " + JSON.stringify(selector));
 	}
+	// db call - fetch addresses for the given selector
 	addressesDB.getAddresses(selector, {}, function(result){
+		//data retrieved - send back to client.
 		console.log("sending " + result);
 		res.send(result); //send the response
 	});

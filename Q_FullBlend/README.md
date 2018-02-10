@@ -1,8 +1,7 @@
-
-
 # Q_FullBlend
 
-
+This is a project done by Qunninox 01 batch at iPrimed. 
+Period - Dec 2017 to Feb 2018
 
 ## Usage
 
@@ -14,7 +13,4 @@
 
 ### Tools
 
-Created with [Nodeclipse](https://github.com/Nodeclipse/nodeclipse-1)
- ([Eclipse Marketplace](http://marketplace.eclipse.org/content/nodeclipse), [site](http://www.nodeclipse.org))   
-
-Nodeclipse is free open-source project that grows with your contributions.
+Eclipse, Node, NPM, Express JS, GitHub.com, Jira Software.

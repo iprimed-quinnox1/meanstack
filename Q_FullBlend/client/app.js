@@ -38,23 +38,40 @@ var appBase = {
 		
 		document.documentElement.lang = this.lang;
 		this.head = document.getElementsByTagName("head")[0];
-		
+		//this.print(this.head);
+
 		this.addScript(this.angular);
+		//this.print(this.head);
+
 		this.addScript(this.ng_route);
+		//this.print(this.head);
+
 		this.addScript(this.jq);
+		//this.print(this.head);
+
 		this.addScript(this.bsjs);
+		//this.print(this.head);
 
 		this.addMeta([["name", "viewport"], ["content", this.view],]);
+		//this.print(this.head);
+
 		this.addMeta([["charset", this.chset],]);
-		
+		//this.print(this.head);
+
 		this.addStylesheet(this.w3css);
+		//this.print(this.head);
+
 		this.addStylesheet(this.bs);
-		
-		
-		//alert("Init Completed<br>" + head.innerHTML);
+		//this.print(this.head);
+
+		//alert("Init Completed");
 	},
 	
-	addChild: function (/* parent element*/ parent, /*child tag name*/ childName, /* key-value pairs*/ attribs ){
+	print: function(ele){
+		alert(ele.innerHTML);
+	},
+	
+	addChild: function (/* parent element*/ parent, /*child tag name*/ childName, /* key-value pairs*/ attribs , clbk){
 		//alert("adding : '" + childName + "'\nattributes: " + JSON.stringify(attribs));
 		if(parent){
 			var child = document.createElement(childName);
@@ -64,22 +81,37 @@ var appBase = {
 			}
 			
 			parent.appendChild(child);
+			
+			// error handling
+			child.onload = child.onreadystatechange = function (e) {
+				if (child.readyState && child.readyState !== 'complete' && child.readyState !== 'loaded') {
+					alert("Loaded child :" + JSON.stringify(child));
+					if(clbk){
+						clbk(child)
+					}
+					return;
+				}
+			};
+			
+			child.onerror = function (e) {
+				alert("Error loading - " + childName + " with attributes: " + attribs);
+			};
 		}
 	},
 	
-	addScript: function (src){
+	addScript: function (src, clbk){
 		//alert(this.head);
-		this.addChild(this.head, "script", [["src", src],]);
+		this.addChild(this.head, "script", [["src", src],], clbk);
 	},
 	
-	addStylesheet: function (href){
+	addStylesheet: function (href, clbk){
 		//alert(this.head);
-		this.addChild(this.head, "link", [["rel", "stylesheet"],["href", href],]);
+		this.addChild(this.head, "link", [["rel", "stylesheet"],["href", href],], clbk);
 	},
 
-	addMeta: function (metaAttribs){
+	addMeta: function (metaAttribs, clbk){
 		//alert(this.head);
-		this.addChild(this.head, "meta", metaAttribs);
+		this.addChild(this.head, "meta", metaAttribs, clbk);
 	},
 	
 	getRemoteURL: function (relPath){

@@ -36,6 +36,7 @@ exports.saveDocuments = function (collection, docs, options, callback){
 		for(var i=0; i<docs.length; i++){
 			coll.save(docs[i], options);
 		}
+		client.close();
 		// callback the listener
 		callback({status:"success", docs:docs});
 	});
@@ -51,6 +52,7 @@ exports.updateDocuments = function (collection, selector, updates, options, call
 		console.log("updating " + JSON.stringify(updates) + " in docs for selector : " + JSON.stringify(selector) + "\n in coll - " + collection );
 		
 		coll.update(selector, updates, options);
+		client.close();
 		// callback the listener
 		callback({status:"success"});
 	});
@@ -75,3 +77,30 @@ exports.removeDocuments = function (collection, selector, options, callback){
 		});
 	});
 }
+
+// check if pre-exists.
+// if pre-exists, get that or create a new one
+function getCollection(dbObj, collectionName, clbk){
+	if(dbObj){
+		dbObj.collectionNames(function(error, names){
+			if(error){
+				throw (error);
+			} else {
+				var _collection = undefined;
+				if(names.includes(collectionName)){
+					_collection = dbObj.collection(collectionName);
+				} else {
+					_collection = dbObj.createCollection(collectionName);
+				}
+				if(clbk){
+					clbk(_collection);
+				}
+				return _collection;
+			}
+		});
+	} else {
+		throw (new Error("Unable to get names of collections on an invalid database object."))
+	}
+	
+}
+

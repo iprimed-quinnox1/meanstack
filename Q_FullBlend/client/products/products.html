@@ -34,11 +34,13 @@
 		<div class="row" ng-show="listStyle=='card'">
 			<div ng-repeat="prod in products" class="w3-card-4 col col-sm-3" style="margin: 20px; height: 250px;">
 				<div style="overflow: auto;">
+					<b style="text-align: center;">{{prod.name}}</b>
 					<img alt="{{prod.photo}}" src="../img/{{prod.photo}}" width="150" height="150" style="display: block; margin: auto; " >
 					<ul style="list-style: none;">
-						<li><b>{{prod.name}}</b> </li>
-						<!-- <li>{{prod._id}} </li> -->
-						<li> <!-- attributes -->
+						<li>{{prod.description}} </li>
+						<!-- attributes -->
+						<!-- 
+						<li> 
 							<ul style="list-style: none;">
 								<li ng-repeat="attr in prod.attribs">
 									<b>{{attr.name}} :</b> 
@@ -47,6 +49,7 @@
 								</li>
 							</ul>
 						</li>
+						 -->
 					</ul>
 				</div>
 				<!-- options -->

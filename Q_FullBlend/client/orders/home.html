@@ -21,10 +21,6 @@ INPUT.newitem {
 		<h1 id="welcome">Welcome {{activeU.uname}}!</h1>
 		<div ng-controller="orderCtrl">
 			<h4>Cart</h4>
-			<p style="font-size: 8px;">
-				Listing Style: <select ng-model="selListing"
-					ng-options="x.lbl for x in listingTypes"></select>
-			</p>
 			<div>
 				<button class="w3-btn w3-green w3-ripple"
 					ng-click="toggleAddNewItem()" ng-hide="showDiv">Add New
@@ -50,7 +46,12 @@ INPUT.newitem {
 			</div>
 
 			<hr>
+			<!-- display list of products in cart -->
 			<span ng-show="user.order.items.length == 0">No Items in Cart</span>
+			<p style="font-size: 8px;" ng-hide="user.order.items.length == 0">
+				Listing Style: <select ng-model="selListing"
+					ng-options="x.lbl for x in listingTypes"></select>
+			</p>
 			<div class="row" ng-show="user.order.items.length >0">
 				<div ng-repeat="item in user.order.items"
 					class="col col-sm-6 {{selListing.cls}}">

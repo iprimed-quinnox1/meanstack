@@ -11,10 +11,11 @@ app.controller("address-edit-ctrl", addressEditController);
 
 // controller callback
 function addressesController($scope, $http, $location){
-	alert(JSON.stringify($location));
-	alert("Search: " + JSON.stringify($location.search('_un=')));
+	//alert(JSON.stringify($location));
+	//alert("Search: " + JSON.stringify($location.search('_un=')));
 	
 	$scope.uname = "";
+	
 	$scope.addresses = [];
 	
 	$scope.edit = function(uname, id){
@@ -35,6 +36,7 @@ function addressesController($scope, $http, $location){
 		if(!selector){
 			selector = {};
 		}
+		//alert("Sending Selector: " + JSON.stringify(selector));
 		$http.post(appBase.getRemoteURL(url_load), {'selector':selector}).then(
 		function(result){
 			data = result.data;
@@ -53,7 +55,7 @@ function addressesController($scope, $http, $location){
 		} else {
 			$scope.uname = name;
 		}
-		//alert($scope.uname);
+		//alert(JSON.stringify(name));
 		$scope.load({"uname": name})
 	}
 	
@@ -81,8 +83,14 @@ function addressesController($scope, $http, $location){
 		}
 	}
 	
-	$scope.init();
+	$scope.activeU = UserService.geActiveUser();
 	
+	if($scope.activeU){
+		$scope.uname = $scope.activeU.uname;
+		$scope.loadAddresses($scope.uname)
+	} else {
+		$scope.init();
+	}
 }
 
 function addressEditController($scope, $http, $location){
