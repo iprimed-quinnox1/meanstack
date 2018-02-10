@@ -1,0 +1,10 @@
+{
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "^3.4.0",
+    "mock": "^0.1.1",
+    "nock": "^2.18.2",
+    "request": "^2.83.0",
+    "sinon": "^1.17.7"
+  }
+}
